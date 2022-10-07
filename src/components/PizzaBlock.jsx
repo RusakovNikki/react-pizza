@@ -1,36 +1,44 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-const PizzaBlock = ({ title, price }) => {
-    let [pizzaCount, setPizzaCount] = useState(0)
-
-    const handleClick = () => {
-        setPizzaCount(++pizzaCount)
-    }
+const PizzaBlock = ({ title, price, picture, sizes, types }) => {
+    const [activeType, setActiveType] = React.useState(0)
+    const [sizePizza, setSizePizza] = React.useState(0)
+    const testSize = ['тонкое', 'традиционное']
 
     return (
         <div className="pizza-block">
             <img
                 className="pizza-block__image"
-                src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+                src={picture}
                 alt="Pizza"
             />
             <h4 className="pizza-block__title">{title}</h4>
             <div className="pizza-block__selector">
                 <ul>
-                    <li className="active">тонкое</li>
-                    <li>традиционное</li>
+                    {
+                        types.map(typeId => {
+                            return <li
+                                className={activeType === typeId ? 'active' : ''}
+                                key={typeId}
+                                onClick={() => { setActiveType(typeId) }}>{testSize[typeId]}</li>
+                        })
+                    }
                 </ul>
                 <ul>
-                    <li className="active">26 см.</li>
-                    <li>30 см.</li>
-                    <li>40 см.</li>
+                    {
+                        sizes.map((elem, index) => {
+                            return <li
+                                className={sizePizza === index ? 'active' : ''}
+                                key={index}
+                                onClick={() => { setSizePizza(index) }}>{elem} см.</li>
+                        })
+                    }
                 </ul>
             </div>
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₽</div>
                 <div
-                    className="button button--outline button--add"
-                    onClick={handleClick}>
+                    className="button button--outline button--add">
                     <svg
                         width="12"
                         height="12"
@@ -44,7 +52,7 @@ const PizzaBlock = ({ title, price }) => {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>{pizzaCount}</i>
+                    <i>0</i>
                 </div>
             </div>
         </div>
