@@ -5,7 +5,7 @@ import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import Sort from '../components/Sort'
 
-const Home = () => {
+const Home = ({ inputText }) => {
     const [items, setItems] = React.useState([])
     const [isLoading, setLoading] = React.useState(true)
 
@@ -16,7 +16,8 @@ const Home = () => {
         order: 'desc'
     })
 
-    const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?${sortByCategory > 0 ? `category=${sortByCategory}` : ''}&sortBy=${sortByType.sortProperty}&order=${sortByType.order}`
+    const searchTextParam = inputText ? `&search=${inputText}` : ''
+    const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?${sortByCategory > 0 ? `category=${sortByCategory}` : ''}&sortBy=${sortByType.sortProperty}&order=${sortByType.order}${searchTextParam}`
 
     React.useEffect(() => {
         setLoading(true)
@@ -27,7 +28,15 @@ const Home = () => {
             .then(_ => setLoading(false))
 
         window.scrollTo(0, 0)
-    }, [sortByCategory, sortByType])
+    }, [sortByCategory, sortByType, inputText])
+
+    const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+    const pizzaItems = items.filter(item => {
+        if (item.title.toLowerCase().includes(inputText.toLowerCase())) {
+            return true
+        }
+        return false
+    }).map(elem => <PizzaBlock key={elem.id} {...elem} />)
 
     return (
         <>
@@ -37,18 +46,7 @@ const Home = () => {
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="pizza-block-wrapper">
-                {isLoading
-                    ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-                    : items.map(elem => {
-                        return <PizzaBlock
-                            price={elem.price}
-                            title={elem.title}
-                            picture={elem.imageUrl}
-                            key={elem.id}
-                            types={elem.types}
-                            sizes={elem.sizes} />
-                    })
-                }
+                {isLoading ? skeletons : pizzaItems}
             </div>
         </>
     )

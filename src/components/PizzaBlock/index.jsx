@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PizzaBlock = ({ title, price, picture, sizes, types }) => {
+const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
     const [activeType, setActiveType] = React.useState(0)
     const [sizePizza, setSizePizza] = React.useState(0)
     const testSize = ['тонкое', 'традиционное']
@@ -9,7 +9,7 @@ const PizzaBlock = ({ title, price, picture, sizes, types }) => {
         <div className="pizza-block">
             <img
                 className="pizza-block__image"
-                src={picture}
+                src={imageUrl}
                 alt="Pizza"
             />
             <h4 className="pizza-block__title">{title}</h4>
