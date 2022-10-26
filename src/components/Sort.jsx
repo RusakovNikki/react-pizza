@@ -1,4 +1,21 @@
-const Sort = () => {
+import React from 'react'
+
+const Sort = ({ sortByType, setSortByType }) => {
+    const [openPopup, setOpenPopup] = React.useState(false)
+    const list = [
+        { name: 'популярности (ASC)', sortProperty: 'rating', order: 'asc' },
+        { name: 'популярности (DESC)', sortProperty: 'rating', order: 'desc' },
+        { name: 'цене (ASC)', sortProperty: 'price', order: 'asc' },
+        { name: 'цене (DESC)', sortProperty: 'price', order: 'desc' },
+        { name: 'алфавиту (ASC)', sortProperty: 'title', order: 'asc' },
+        { name: 'алфавиту (DESC)', sortProperty: 'title', order: 'desc' },
+    ]
+
+    const selectSort = (obj) => {
+        setSortByType(obj)
+        setOpenPopup(false)
+    }
+
     return (
         <div className="sort">
             <div className="sort__label">
@@ -15,15 +32,20 @@ const Sort = () => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span>популярности</span>
+                <span onClick={() => setOpenPopup(!openPopup)}>{sortByType.name}</span>
             </div>
-            <div className="sort__popup">
+            {openPopup && <div className="sort__popup">
                 <ul>
-                    <li className="active">популярности</li>
-                    <li>цене</li>
-                    <li>алфавиту</li>
+                    {
+                        list.map((obj) => {
+                            return <li
+                                key={obj.name}
+                                className={sortByType.sortProperty === obj.sortProperty && sortByType.order === obj.order ? 'active' : ''}
+                                onClick={() => selectSort(obj)}>{obj.name}</li>
+                        })
+                    }
                 </ul>
-            </div>
+            </div>}
         </div>
     )
 }

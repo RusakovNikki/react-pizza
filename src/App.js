@@ -1,11 +1,13 @@
 import "./App.css";
-import Categories from "./components/Categories";
+import React from 'react'
+
 import Header from "./components/Header";
-import PizzaBlock from "./components/PizzaBlock";
-import Sort from "./components/Sort";
-import items from './assets/pizzas.json'
 
 import "./scss/app.scss";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import { Route, Routes } from "react-router-dom";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -13,25 +15,11 @@ function App() {
       <Header />
       <div className="content">
         <div className="container">
-          <div className="content__top">
-            <Categories />
-            <Sort />
-          </div>
-          <h2 className="content__title">Все пиццы</h2>
-          <div className="pizza-block-wrapper">
-            {
-              items.map(elem => {
-                return <PizzaBlock
-                  price={elem.price}
-                  title={elem.title}
-                  picture={elem.imageUrl}
-                  key={elem.id}
-                  types={elem.types}
-                  sizes={elem.sizes} />
-              })
-            }
-          </div>
-
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} /> {/* в самом конце */}
+          </Routes>
         </div>
       </div>
     </div>
