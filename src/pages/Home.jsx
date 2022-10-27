@@ -5,7 +5,7 @@ import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import Sort from '../components/Sort'
 
-const Home = ({ inputText }) => {
+const Home = ({ inputText, countPages }) => {
     const [items, setItems] = React.useState([])
     const [isLoading, setLoading] = React.useState(true)
 
@@ -17,7 +17,7 @@ const Home = ({ inputText }) => {
     })
 
     const searchTextParam = inputText ? `&search=${inputText}` : ''
-    const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?${sortByCategory > 0 ? `category=${sortByCategory}` : ''}&sortBy=${sortByType.sortProperty}&order=${sortByType.order}${searchTextParam}`
+    const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?page=${countPages}&limit=4${sortByCategory > 0 ? `&category=${sortByCategory}` : ''}&sortBy=${sortByType.sortProperty}&order=${sortByType.order}${searchTextParam}`
 
     React.useEffect(() => {
         setLoading(true)
@@ -28,7 +28,7 @@ const Home = ({ inputText }) => {
             .then(_ => setLoading(false))
 
         window.scrollTo(0, 0)
-    }, [sortByCategory, sortByType, inputText])
+    }, [sortByCategory, sortByType, inputText, countPages])
 
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
     const pizzaItems = items.filter(item => {
