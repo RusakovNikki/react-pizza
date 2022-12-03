@@ -1,12 +1,12 @@
-import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import React from 'react'
 
+import "./App.css";
 import Header from "./components/Header";
-
 import "./scss/app.scss";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import { Route, Routes } from "react-router-dom";
 import Cart from "./pages/Cart";
 import Pagination from "./components/Pagination";
 

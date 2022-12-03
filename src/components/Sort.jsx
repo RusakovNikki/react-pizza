@@ -1,18 +1,25 @@
-import React from 'react'
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
 
-const Sort = ({ sortByType, setSortByType }) => {
+import { setSortByType } from "../redux/slices/filterSlice"
+
+const list = [
+    { name: "популярности (ASC)", sortProperty: "rating", order: "asc" },
+    { name: "популярности (DESC)", sortProperty: "rating", order: "desc" },
+    { name: "цене (ASC)", sortProperty: "price", order: "asc" },
+    { name: "цене (DESC)", sortProperty: "price", order: "desc" },
+    { name: "алфавиту (ASC)", sortProperty: "title", order: "asc" },
+    { name: "алфавиту (DESC)", sortProperty: "title", order: "desc" },
+]
+
+const Sort = () => {
+    const dispatch = useDispatch()
+    const sortByType = useSelector((state) => state.filter.sort)
+
     const [openPopup, setOpenPopup] = React.useState(false)
-    const list = [
-        { name: 'популярности (ASC)', sortProperty: 'rating', order: 'asc' },
-        { name: 'популярности (DESC)', sortProperty: 'rating', order: 'desc' },
-        { name: 'цене (ASC)', sortProperty: 'price', order: 'asc' },
-        { name: 'цене (DESC)', sortProperty: 'price', order: 'desc' },
-        { name: 'алфавиту (ASC)', sortProperty: 'title', order: 'asc' },
-        { name: 'алфавиту (DESC)', sortProperty: 'title', order: 'desc' },
-    ]
 
     const selectSort = (obj) => {
-        setSortByType(obj)
+        dispatch(setSortByType(obj))
         setOpenPopup(false)
     }
 
@@ -32,20 +39,33 @@ const Sort = ({ sortByType, setSortByType }) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setOpenPopup(!openPopup)}>{sortByType.name}</span>
+                <span onClick={() => setOpenPopup(!openPopup)}>
+                    {sortByType.name}
+                </span>
             </div>
-            {openPopup && <div className="sort__popup">
-                <ul>
-                    {
-                        list.map((obj) => {
-                            return <li
-                                key={obj.name}
-                                className={sortByType.sortProperty === obj.sortProperty && sortByType.order === obj.order ? 'active' : ''}
-                                onClick={() => selectSort(obj)}>{obj.name}</li>
-                        })
-                    }
-                </ul>
-            </div>}
+            {openPopup && (
+                <div className="sort__popup">
+                    <ul>
+                        {list.map((obj) => {
+                            return (
+                                <li
+                                    key={obj.name}
+                                    className={
+                                        sortByType.sortProperty ===
+                                            obj.sortProperty &&
+                                        sortByType.order === obj.order
+                                            ? "active"
+                                            : ""
+                                    }
+                                    onClick={() => selectSort(obj)}
+                                >
+                                    {obj.name}
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+            )}
         </div>
     )
 }
