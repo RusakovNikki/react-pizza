@@ -1,73 +1,98 @@
 import React from "react"
+import { useEffect } from "react"
+import axios from "axios"
 import { useContext } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import qs from "qs"
 
 import { MyContext } from "../App"
 import Categories from "../components/Categories"
 import PizzaBlock from "../components/PizzaBlock"
 import Skeleton from "../components/PizzaBlock/Skeleton"
-import Sort from "../components/Sort"
+import Sort, { list } from "../components/Sort"
+import { setCategodyId, setParams } from "../redux/slices/filterSlice"
 
 const Home = () => {
-  const { inputText, countPages } = useContext(MyContext)
-  const [items, setItems] = React.useState([])
-  const [isLoading, setLoading] = React.useState(true)
+    const navigate = useNavigate()
+    const { inputText, countPages } = useContext(MyContext)
+    const [items, setItems] = React.useState([])
+    const [isLoading, setLoading] = React.useState(true)
 
-  const [sortByCategory, setSortByCategory] = React.useState(0)
-  const [sortByType, setSortByType] = React.useState({
-    name: "популярности",
-    sortProperty: "rating",
-    order: "desc",
-  })
+    const { sort: sortByType, category: sortByCategory } = useSelector(
+        (state) => state.filter
+    )
+    const dispatch = useDispatch()
 
-  const searchTextParam = inputText ? `&search=${inputText}` : ""
-  const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?page=${countPages}&limit=4${
-    sortByCategory > 0 ? `&category=${sortByCategory}` : ""
-  }&sortBy=${sortByType.sortProperty}&order=${
-    sortByType.order
-  }${searchTextParam}`
+    const searchTextParam = inputText ? `&search=${inputText}` : ""
+    const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?page=${countPages}&limit=4${
+        sortByCategory > 0 ? `&category=${sortByCategory}` : ""
+    }&sortBy=${sortByType.sortProperty}&order=${
+        sortByType.order
+    }${searchTextParam}`
 
-  React.useEffect(() => {
-    setLoading(true)
+    useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1))
 
-    fetch(URL)
-      .then((res) => res.json())
-      .then((json) => setItems(json))
-      .then((_) => setLoading(false))
+            const sort = list.find((obj) => {
+                return obj.sortProperty === params.sortByType
+            })
 
-    window.scrollTo(0, 0)
-  }, [sortByCategory, sortByType, inputText, countPages])
+            console.log({ ...params, sort })
+            dispatch(setParams({ ...params, sort }))
+        }
+    }, [])
 
-  const skeletons = [...new Array(6)].map((_, index) => (
-    <Skeleton key={index} />
-  ))
-  console.log(items)
-  const pizzaItems = items
-    .filter((item) => {
-      if (item.title.toLowerCase().includes(inputText.toLowerCase())) {
-        return true
-      }
-      return false
-    })
-    .map((elem) => <PizzaBlock key={elem.id} {...elem} />)
+    useEffect(() => {
+        const queryString = qs.stringify({
+            sortByCategory,
+            sortByType: sortByType.sortProperty,
+            countPages,
+        })
 
-  return (
-    <>
-      <div className="content__top">
-        <Categories
-          sortByCategory={sortByCategory}
-          setSortByCategory={(idx) => setSortByCategory(idx)}
-        />
-        <Sort
-          sortByType={sortByType}
-          setSortByType={(obj) => setSortByType(obj)}
-        />
-      </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="pizza-block-wrapper">
-        {isLoading ? skeletons : pizzaItems}
-      </div>
-    </>
-  )
+        navigate(`?${queryString}`)
+
+        setLoading(true)
+
+        axios
+            .get(URL)
+            .then((res) => {
+                setItems(res.data)
+            })
+            .then((_) => setLoading(false))
+
+        window.scrollTo(0, 0)
+    }, [sortByCategory, sortByType, inputText, countPages])
+
+    const skeletons = [...new Array(6)].map((_, index) => (
+        <Skeleton key={index} />
+    ))
+
+    const pizzaItems = items
+        .filter((item) => {
+            if (item.title.toLowerCase().includes(inputText.toLowerCase())) {
+                return true
+            }
+            return false
+        })
+        .map((elem) => <PizzaBlock key={elem.id} {...elem} />)
+
+    return (
+        <>
+            <div className="content__top">
+                <Categories
+                    sortByCategory={sortByCategory}
+                    setSortByCategory={(id) => dispatch(setCategodyId(id))}
+                />
+                <Sort />
+            </div>
+            <h2 className="content__title">Все пиццы</h2>
+            <div className="pizza-block-wrapper">
+                {isLoading ? skeletons : pizzaItems}
+            </div>
+        </>
+    )
 }
 
 export default Home

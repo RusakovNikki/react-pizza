@@ -1,12 +1,12 @@
-import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import React from 'react'
 
+import "./App.css";
 import Header from "./components/Header";
-
 import "./scss/app.scss";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import { Route, Routes } from "react-router-dom";
 import Cart from "./pages/Cart";
 import Pagination from "./components/Pagination";
 
@@ -15,7 +15,7 @@ export const MyContext = React.createContext('');
 function App() {
 
   const [inputText, setInputText] = React.useState('')
-  const [countPages, setCountPages] = React.useState(1)
+  const { page: countPages } = useSelector((state) => state.filter)
 
   return (
     <div className="wrapper">
@@ -30,7 +30,7 @@ function App() {
             </Routes>
           </div>
         </div>
-        <Pagination onChangePages={page => setCountPages(page)} />
+        <Pagination />
       </MyContext.Provider>
     </div>
   )
