@@ -15,7 +15,7 @@ export const MyContext = React.createContext('');
 function App() {
 
   const [inputText, setInputText] = React.useState('')
-  const [countPages, setCountPages] = React.useState(1)
+  const { page: countPages } = useSelector((state) => state.filter)
 
   return (
     <div className="wrapper">
@@ -30,7 +30,7 @@ function App() {
             </Routes>
           </div>
         </div>
-        <Pagination onChangePages={page => setCountPages(page)} />
+        <Pagination />
       </MyContext.Provider>
     </div>
   )
