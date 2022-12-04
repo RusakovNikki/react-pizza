@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { setSortByType } from "../redux/slices/filterSlice"
 
-const list = [
+export const list = [
     { name: "популярности (ASC)", sortProperty: "rating", order: "asc" },
     { name: "популярности (DESC)", sortProperty: "rating", order: "desc" },
     { name: "цене (ASC)", sortProperty: "price", order: "asc" },
@@ -15,6 +15,8 @@ const list = [
 const Sort = () => {
     const dispatch = useDispatch()
     const sortByType = useSelector((state) => state.filter.sort)
+
+    console.log(sortByType)
 
     const [openPopup, setOpenPopup] = React.useState(false)
 

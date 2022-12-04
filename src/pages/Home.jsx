@@ -3,15 +3,18 @@ import { useEffect } from "react"
 import axios from "axios"
 import { useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import qs from "qs"
 
 import { MyContext } from "../App"
 import Categories from "../components/Categories"
 import PizzaBlock from "../components/PizzaBlock"
 import Skeleton from "../components/PizzaBlock/Skeleton"
-import Sort from "../components/Sort"
-import { setCategodyId } from "../redux/slices/filterSlice"
+import Sort, { list } from "../components/Sort"
+import { setCategodyId, setParams } from "../redux/slices/filterSlice"
 
 const Home = () => {
+    const navigate = useNavigate()
     const { inputText, countPages } = useContext(MyContext)
     const [items, setItems] = React.useState([])
     const [isLoading, setLoading] = React.useState(true)
@@ -29,6 +32,27 @@ const Home = () => {
     }${searchTextParam}`
 
     useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1))
+
+            const sort = list.find((obj) => {
+                return obj.sortProperty === params.sortByType
+            })
+
+            console.log({ ...params, sort })
+            dispatch(setParams({ ...params, sort }))
+        }
+    }, [])
+
+    useEffect(() => {
+        const queryString = qs.stringify({
+            sortByCategory,
+            sortByType: sortByType.sortProperty,
+            countPages,
+        })
+
+        navigate(`?${queryString}`)
+
         setLoading(true)
 
         axios
