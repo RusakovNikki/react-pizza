@@ -4,6 +4,7 @@ import axios from "axios"
 import { useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { useRef } from "react"
 import qs from "qs"
 
 import { MyContext } from "../App"
@@ -11,9 +12,15 @@ import Categories from "../components/Categories"
 import PizzaBlock from "../components/PizzaBlock"
 import Skeleton from "../components/PizzaBlock/Skeleton"
 import Sort, { list } from "../components/Sort"
-import { setCategodyId, setParams } from "../redux/slices/filterSlice"
+import {
+    setCategodyId,
+    setDefaultParams,
+    setParams,
+} from "../redux/slices/filterSlice"
 
 const Home = () => {
+    const isParams = useRef(false)
+    const isMounted = useRef(false)
     const navigate = useNavigate()
     const { inputText, countPages } = useContext(MyContext)
     const [items, setItems] = React.useState([])
@@ -22,6 +29,7 @@ const Home = () => {
     const { sort: sortByType, category: sortByCategory } = useSelector(
         (state) => state.filter
     )
+
     const dispatch = useDispatch()
 
     const searchTextParam = inputText ? `&search=${inputText}` : ""
@@ -32,27 +40,20 @@ const Home = () => {
     }${searchTextParam}`
 
     useEffect(() => {
-        if (window.location.search) {
-            const params = qs.parse(window.location.search.substring(1))
+        // При первом заходе на сайт, используется для сохранения параметров фильтрации
+        const params = qs.parse(window.location.search.substring(1))
 
-            const sort = list.find((obj) => {
-                return obj.sortProperty === params.sortByType
-            })
-
-            console.log({ ...params, sort })
+        const sort = list.find((obj) => {
+            return obj.sortProperty === params.sortByType
+        })
+        if (window.location.search && sort) {
             dispatch(setParams({ ...params, sort }))
+
+            isParams.current = true
         }
     }, [])
 
-    useEffect(() => {
-        const queryString = qs.stringify({
-            sortByCategory,
-            sortByType: sortByType.sortProperty,
-            countPages,
-        })
-
-        navigate(`?${queryString}`)
-
+    function fetchData() {
         setLoading(true)
 
         axios
@@ -61,9 +62,27 @@ const Home = () => {
                 setItems(res.data)
             })
             .then((_) => setLoading(false))
-
+    }
+    useEffect(() => {
         window.scrollTo(0, 0)
+
+        if (!isParams.current) {
+            fetchData()
+        }
+
+        isParams.current = false
     }, [sortByCategory, sortByType, inputText, countPages])
+
+    useEffect(() => {
+        const queryString = qs.stringify({
+            sortByCategory,
+            sortByType: sortByType.sortProperty,
+            countPages,
+        })
+        if (isMounted.current) navigate(`?${queryString}`)
+
+        isMounted.current = true
+    }, [sortByCategory, sortByType, countPages])
 
     const skeletons = [...new Array(6)].map((_, index) => (
         <Skeleton key={index} />
