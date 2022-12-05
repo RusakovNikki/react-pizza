@@ -31,7 +31,6 @@ export const filterSlice = createSlice({
         setDefaultParams(state) {
             state.category = initialState.category
             state.sort = initialState.sort
-            console.log(initialState.sort);
             state.page = initialState.page
         }
     },

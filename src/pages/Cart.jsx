@@ -1,12 +1,25 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import CartEmpty from "../components/CartEmpty"
 import CartItem from "../components/CartItem"
+import { clearItems } from "../redux/slices/cartSlice"
+import { BASE_URL } from "../utils/consts"
 
 const Cart = () => {
     const dispatch = useDispatch()
     const { totalPrice, items } = useSelector((state) => state.cart)
     const itemsLength = items.reduce((acc, cur) => acc + cur.count, 0)
+
+    console.log(totalPrice)
+    const delAllItemsCart = () => {
+        if (window.confirm("Вы уверены что хотите удалить весь товар?"))
+            dispatch(clearItems())
+    }
+
+    if (!items.length) {
+        return <CartEmpty />
+    }
     return (
         <div className="container--cart">
             <div className="cart">
@@ -81,7 +94,9 @@ const Cart = () => {
                             />
                         </svg>
 
-                        <span>Очистить корзину</span>
+                        <span onClick={() => delAllItemsCart()}>
+                            Очистить корзину
+                        </span>
                     </div>
                 </div>
                 <div className="content__items">
@@ -102,7 +117,7 @@ const Cart = () => {
                     </div>
                     <div className="cart__bottom-buttons">
                         <Link
-                            to="/"
+                            to={BASE_URL}
                             className="button button--outline button--add go-back-btn"
                         >
                             <svg

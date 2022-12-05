@@ -55,8 +55,14 @@ const Search = () => {
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <g id="cross">
-                        <line class="cls-1" x1="7" x2="25" y1="7" y2="25" />
-                        <line class="cls-1" x1="7" x2="25" y1="25" y2="7" />
+                        <line className="cls-1" x1="7" x2="25" y1="7" y2="25" />
+                        <line
+                            classsName="cls-1"
+                            x1="7"
+                            x2="25"
+                            y1="25"
+                            y2="7"
+                        />
                     </g>
                 </svg>
             )}

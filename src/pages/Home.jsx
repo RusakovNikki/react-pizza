@@ -17,6 +17,7 @@ import {
     setDefaultParams,
     setParams,
 } from "../redux/slices/filterSlice"
+import Pagination from "../components/Pagination"
 
 const Home = () => {
     const isParams = useRef(false)
@@ -110,6 +111,7 @@ const Home = () => {
             <div className="pizza-block-wrapper">
                 {isLoading ? skeletons : pizzaItems}
             </div>
+            <Pagination />
         </>
     )
 }

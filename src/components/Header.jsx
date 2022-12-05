@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import logo from "../assets/img/pizza-logo.svg"
+import { BASE_URL } from "../utils/consts"
 import Search from "./Search"
 
 const Header = () => {
@@ -10,7 +11,7 @@ const Header = () => {
     return (
         <div className="header">
             <div className="container">
-                <a href="/react-pizza">
+                <a href={BASE_URL}>
                     <div className="header__logo">
                         <img width="38" src={logo} alt="Pizza logo" />
                         <div>
@@ -22,7 +23,7 @@ const Header = () => {
                 <Search />
                 <div className="header__cart">
                     <Link
-                        to="/react-pizza/cart"
+                        to={`${BASE_URL}/cart`}
                         className="button button--cart"
                     >
                         <span>{totalPrice} ₽</span>

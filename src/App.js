@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import Pagination from "./components/Pagination";
+import { BASE_URL } from "./utils/consts";
 
 export const MyContext = React.createContext('');
 
@@ -24,13 +25,12 @@ function App() {
         <div className="content">
           <div className="container">
             <Routes>
-              <Route path="/react-pizza/" element={<Home />} />
-              <Route path="/react-pizza/cart" element={<Cart />} />
+              <Route path={BASE_URL} element={<Home />} />
+              <Route path={`${BASE_URL}/cart`} element={<Cart />} />
               <Route path="*" element={<NotFound />} /> {/* в самом конце */}
             </Routes>
           </div>
         </div>
-        <Pagination />
       </MyContext.Provider>
     </div>
   )

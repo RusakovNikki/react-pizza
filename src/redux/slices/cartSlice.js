@@ -10,26 +10,37 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addProduct(state, action) {
-            const findItem = state.items.find(item => item.id === action.payload.id)
-
-            if (findItem) {
-                findItem.count++
-                findItem.size.push(action.payload.size[0])
-                findItem.type.push(action.payload.type[0])
+            const isAvailable = state.items.find(item => item.id === action.payload.id && item.type === action.payload.type && item.size === action.payload.size)
+            if (isAvailable) {
+                isAvailable.count++
             }
-            else state.items.push({ ...action.payload, count: 1 })
+            else
+                state.items.push({ ...action.payload, count: 1 })
+
             state.totalPrice += action.payload.price
         },
-        removeProduct(state, action) {
-            // state.totalPrice -= action.payload.price
-            // state.items = state.items.filter(obj => obj.id !== action.payload)
+        cutProduct(state, action) {
+            const isAvailable = state.items.find(item => item.id === action.payload.id && item.type === action.payload.type && item.size === action.payload.size)
+
+            if (isAvailable) {
+                isAvailable.count--
+                state.totalPrice -= action.payload.price
+            }
+        },
+        deleteItem(state, action) {
+            const isAvailable = state.items.find(item => item.id === action.payload.id && item.type === action.payload.type && item.size === action.payload.size)
+
+            state.items = state.items.filter(item => item !== isAvailable)
+            state.totalPrice -= action.payload.price
         },
         clearItems(state) {
-            state = initialState
+            state.items = []
+            state.totalPrice = 0
+            console.log(state)
         }
     },
 })
 
-export const { addProduct, removeProduct, clearItems } = cartSlice.actions
+export const { addProduct, cutProduct, clearItems, deleteItem } = cartSlice.actions
 
 export default cartSlice.reducer

@@ -1,12 +1,13 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { addProduct } from "../../redux/slices/cartSlice"
 
 const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
     const dispatch = useDispatch()
-    const count = useSelector((state) =>
-        state.cart.items.find((obj) => obj.id === id)
-    )
+
+    const [countPizzas, setCountPizzas] = useState(0)
+
     const [activeType, setActiveType] = React.useState(0)
     const [sizePizza, setSizePizza] = React.useState(0)
     const testSize = ["тонкое", "традиционное"]
@@ -17,12 +18,14 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
             title,
             price,
             imageUrl,
-            type: [testSize[activeType]],
-            size: [sizes[sizePizza]],
+            type: testSize[activeType],
+            size: sizes[sizePizza],
             count: 1,
         }
+        setCountPizzas((prev) => ++prev)
         dispatch(addProduct(item))
     }
+
     return (
         <div className="pizza-block">
             <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
@@ -80,7 +83,7 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
                         />
                     </svg>
                     <span>Добавить</span>
-                    {count?.count && <i>{count.count || 0}</i>}
+                    {countPizzas > 0 && <i>{countPizzas}</i>}
                 </div>
             </div>
         </div>
