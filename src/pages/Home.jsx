@@ -1,10 +1,7 @@
-import React from "react"
-import { useEffect } from "react"
+import React, { useEffect, useContext, useRef } from "react"
 import axios from "axios"
-import { useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useRef } from "react"
 import qs from "qs"
 
 import { MyContext } from "../App"
@@ -14,16 +11,14 @@ import Skeleton from "../components/PizzaBlock/Skeleton"
 import Sort, { list } from "../components/Sort"
 import { setCategodyId, setParams } from "../redux/slices/filterSlice"
 import Pagination from "../components/Pagination"
-import { setItems } from "../redux/slices/pizzaSlice"
+import { fetchPizzas } from "../redux/slices/pizzaSlice"
 
 const Home = () => {
     const isParams = useRef(false)
     const isMounted = useRef(false)
     const navigate = useNavigate()
     const { inputText, countPages } = useContext(MyContext)
-    const items = useSelector((state) => state.pizza.items)
-    console.log(items)
-    const [isLoading, setLoading] = React.useState(true)
+    const { items, status } = useSelector((state) => state.pizza)
 
     const { sort: sortByType, category: sortByCategory } = useSelector(
         (state) => state.filter
@@ -32,7 +27,7 @@ const Home = () => {
     const dispatch = useDispatch()
 
     const searchTextParam = inputText ? `&search=${inputText}` : ""
-    const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?page=${countPages}&limit=4${
+    const URL = `https://-6341842616ffb7e275d2fd20.mockapi.io/items?page=${countPages}&limit=4${
         sortByCategory > 0 ? `&category=${sortByCategory}` : ""
     }&sortBy=${sortByType.sortProperty}&order=${
         sortByType.order
@@ -53,17 +48,7 @@ const Home = () => {
     }, [])
 
     async function fetchData() {
-        setLoading(true)
-
-        try {
-            const res = await axios.get(URL)
-            dispatch(setItems(res.data))
-        } catch (error) {
-            alert("Error")
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
+        dispatch(fetchPizzas(URL))
     }
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -110,7 +95,20 @@ const Home = () => {
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="pizza-block-wrapper">
-                {isLoading ? skeletons : pizzaItems}
+                {status === "error" && (
+                    <div className="content__error-message">
+                        <h2>
+                            Приносим свои извинения <span>😕</span>
+                        </h2>
+                        <p>
+                            Вероятней всего, произошла ошибка на сервере.
+                            <br />
+                            Попробуйте обновить страницу или зайти немного
+                            позднее
+                        </p>
+                    </div>
+                )}
+                {status === "loading" ? skeletons : pizzaItems}
             </div>
             <Pagination />
         </>
