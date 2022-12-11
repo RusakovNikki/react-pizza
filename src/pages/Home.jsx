@@ -12,19 +12,17 @@ import Categories from "../components/Categories"
 import PizzaBlock from "../components/PizzaBlock"
 import Skeleton from "../components/PizzaBlock/Skeleton"
 import Sort, { list } from "../components/Sort"
-import {
-    setCategodyId,
-    setDefaultParams,
-    setParams,
-} from "../redux/slices/filterSlice"
+import { setCategodyId, setParams } from "../redux/slices/filterSlice"
 import Pagination from "../components/Pagination"
+import { setItems } from "../redux/slices/pizzaSlice"
 
 const Home = () => {
     const isParams = useRef(false)
     const isMounted = useRef(false)
     const navigate = useNavigate()
     const { inputText, countPages } = useContext(MyContext)
-    const [items, setItems] = React.useState([])
+    const items = useSelector((state) => state.pizza.items)
+    console.log(items)
     const [isLoading, setLoading] = React.useState(true)
 
     const { sort: sortByType, category: sortByCategory } = useSelector(
@@ -54,15 +52,18 @@ const Home = () => {
         }
     }, [])
 
-    function fetchData() {
+    async function fetchData() {
         setLoading(true)
 
-        axios
-            .get(URL)
-            .then((res) => {
-                setItems(res.data)
-            })
-            .then((_) => setLoading(false))
+        try {
+            const res = await axios.get(URL)
+            dispatch(setItems(res.data))
+        } catch (error) {
+            alert("Error")
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     }
     useEffect(() => {
         window.scrollTo(0, 0)
