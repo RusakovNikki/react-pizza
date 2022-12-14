@@ -7,7 +7,8 @@ const initialState = {
         sortProperty: "rating",
         order: "desc",
     },
-    page: 1
+    page: 1,
+    searchText: ''
 }
 
 export const filterSlice = createSlice({
@@ -32,10 +33,13 @@ export const filterSlice = createSlice({
             state.category = initialState.category
             state.sort = initialState.sort
             state.page = initialState.page
+        },
+        setSearchText(state, action) {
+            state.searchText = action.payload
         }
     },
 })
 
-export const { setCategodyId, setSortByType, onChangePages, setParams, setDefaultParams } = filterSlice.actions
+export const { setCategodyId, setSortByType, onChangePages, setParams, setDefaultParams, setSearchText } = filterSlice.actions
 
 export default filterSlice.reducer

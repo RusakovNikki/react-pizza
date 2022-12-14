@@ -1,27 +1,26 @@
-import React from "react"
-import { useRef, useContext } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import React, { useRef, useCallback, useState } from "react"
 import debounce from "lodash.debounce"
 
-import { MyContext } from "../../App"
 import s from "./Search.module.scss"
-import { useCallback } from "react"
-import { useState } from "react"
+import { setSearchText } from "../../redux/slices/filterSlice"
 
 const Search = () => {
     const [value, setValue] = useState("")
-    const { setInputText } = useContext(MyContext)
+    const { searchText } = useSelector((state) => state.filter)
+    const dispatch = useDispatch()
     const ref = useRef(null)
 
     const updateSearchValue = useCallback(
         debounce((str) => {
-            setInputText(str)
+            dispatch(setSearchText(str))
         }, 500),
         []
     )
 
     const onChangeInput = (e) => {
         setValue("")
-        setInputText("")
+        dispatch(setSearchText(""))
         ref.current.focus()
     }
     return (
@@ -56,13 +55,7 @@ const Search = () => {
                 >
                     <g id="cross">
                         <line className="cls-1" x1="7" x2="25" y1="7" y2="25" />
-                        <line
-                            classsName="cls-1"
-                            x1="7"
-                            x2="25"
-                            y1="25"
-                            y2="7"
-                        />
+                        <line className="cls-1" x1="7" x2="25" y1="25" y2="7" />
                     </g>
                 </svg>
             )}

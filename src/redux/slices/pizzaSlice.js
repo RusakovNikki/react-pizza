@@ -3,8 +3,9 @@ import axios from 'axios'
 
 export const fetchPizzas = createAsyncThunk(
     'pizza/fetchPizzas',
-    async (URL) => {
+    async (URL, thunkAPI) => {
         const { data } = await axios.get(URL)
+
         return data
     }
 )
