@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import logo from "../assets/img/pizza-logo.svg"
 import { BASE_URL } from "../utils/consts"
 import Search from "./Search"
@@ -7,7 +7,7 @@ import Search from "./Search"
 const Header = () => {
     const { totalPrice, items } = useSelector((state) => state.cart)
     const itemsLength = items.reduce((acc, cur) => acc + cur.count, 0)
-
+    const { pathname } = useLocation() // Производит перерисовку
     return (
         <div className="header">
             <div className="container">
@@ -20,7 +20,7 @@ const Header = () => {
                         </div>
                     </div>
                 </a>
-                <Search />
+                {pathname !== `${BASE_URL}/cart` && <Search />}
                 <div className="header__cart">
                     <Link
                         to={`${BASE_URL}/cart`}
