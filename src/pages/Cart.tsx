@@ -7,10 +7,13 @@ import CartItem from "../components/CartItem"
 import { clearItems } from "../redux/slices/cartSlice"
 import { BASE_URL } from "../utils/consts"
 
-const Cart = () => {
+const Cart: React.FC = () => {
     const dispatch = useDispatch()
-    const { totalPrice, items } = useSelector((state) => state.cart)
-    const itemsLength = items.reduce((acc, cur) => acc + cur.count, 0)
+    const { totalPrice, items } = useSelector((state: any) => state.cart)
+    const itemsLength = items.reduce(
+        (acc: number, cur: any) => acc + cur.count,
+        0
+    )
 
     console.log(totalPrice)
     const delAllItemsCart = () => {
@@ -101,7 +104,7 @@ const Cart = () => {
                     </div>
                 </div>
                 <div className="content__items">
-                    {items.map((item, idx) => (
+                    {items.map((item: any, idx: number) => (
                         <CartItem key={`${item}${idx}`} {...item} />
                     ))}
                 </div>

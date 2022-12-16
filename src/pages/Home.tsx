@@ -16,12 +16,12 @@ const Home = () => {
     const isMounted = useRef(false)
     const navigate = useNavigate()
     const { searchText, page: countPages } = useSelector(
-        (state) => state.filter
+        (state: any) => state.filter
     )
-    const { items, status } = useSelector((state) => state.pizza)
+    const { items, status } = useSelector((state: any) => state.pizza)
 
     const { sort: sortByType, category: sortByCategory } = useSelector(
-        (state) => state.filter
+        (state: any) => state.filter
     )
 
     const dispatch = useDispatch()
@@ -47,14 +47,15 @@ const Home = () => {
         }
     }, [])
 
-    async function fetchData() {
+    function fetchData(URL: string) {
+        //@ts-ignore
         dispatch(fetchPizzas(URL))
     }
     useEffect(() => {
         window.scrollTo(0, 0)
 
         if (!isParams.current) {
-            fetchData()
+            fetchData(URL)
         }
 
         isParams.current = false
@@ -76,20 +77,22 @@ const Home = () => {
     ))
 
     const pizzaItems = items
-        .filter((item) => {
+        .filter((item: any) => {
             if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
                 return true
             }
             return false
         })
-        .map((elem) => <PizzaBlock key={elem.id} {...elem} />)
+        .map((elem: any) => <PizzaBlock key={elem.id} {...elem} />)
 
     return (
         <>
             <div className="content__top">
                 <Categories
                     sortByCategory={sortByCategory}
-                    setSortByCategory={(id) => dispatch(setCategodyId(id))}
+                    setSortByCategory={(id: number) =>
+                        dispatch(setCategodyId(id))
+                    }
                 />
                 <Sort />
             </div>
