@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { setSortByType } from "../redux/slices/filterSlice"
 
-export const list = [
+type ListType = {
+    name: string
+    sortProperty: string
+    order: string
+}
+
+export const list: ListType[] = [
     { name: "популярности (ASC)", sortProperty: "rating", order: "asc" },
     { name: "популярности (DESC)", sortProperty: "rating", order: "desc" },
     { name: "цене (ASC)", sortProperty: "price", order: "asc" },
@@ -15,18 +21,18 @@ export const list = [
 ]
 
 const Sort = () => {
-    const sortRef = useRef()
+    const sortRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
-    const sortByType = useSelector((state) => state.filter.sort)
+    const sortByType = useSelector((state: any) => state.filter.sort)
 
     const [openPopup, setOpenPopup] = React.useState(false)
 
-    const selectSort = (obj) => {
+    const selectSort = (obj: ListType) => {
         dispatch(setSortByType(obj))
         setOpenPopup(false)
     }
     useEffect(() => {
-        const handleClick = (event) => {
+        const handleClick = (event: any) => {
             if (!event.path.includes(sortRef.current)) {
                 setOpenPopup(false)
             }

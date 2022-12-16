@@ -4,9 +4,12 @@ import logo from "../assets/img/pizza-logo.svg"
 import { BASE_URL } from "../utils/consts"
 import Search from "./Search"
 
-const Header = () => {
-    const { totalPrice, items } = useSelector((state) => state.cart)
-    const itemsLength = items.reduce((acc, cur) => acc + cur.count, 0)
+const Header: React.FC = () => {
+    const { totalPrice, items } = useSelector((state: any) => state.cart)
+    const itemsLength = items.reduce(
+        (acc: number, cur: any) => acc + cur.count,
+        0
+    )
     const { pathname } = useLocation() // Производит перерисовку
     return (
         <div className="header">

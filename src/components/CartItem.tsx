@@ -3,11 +3,28 @@ import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { addProduct, cutProduct, deleteItem } from "../redux/slices/cartSlice"
 
-const CartItem = ({ item }) => {
-    const { imageUrl, title, type, size, price, count, id } = item
+type CartType = {
+    imageUrl: string
+    title: string
+    type: string
+    size: number
+    price: number
+    count: number
+    id: string
+}
+
+const CartItem: React.FC<CartType> = ({
+    imageUrl,
+    title,
+    type,
+    size,
+    price,
+    count,
+    id,
+}) => {
     const dispatch = useDispatch()
 
-    const currItem = {
+    const currItem: CartType = {
         id,
         title,
         price,
@@ -23,9 +40,9 @@ const CartItem = ({ item }) => {
         }
     }, [count])
 
-    const cutItem = (currItem) => dispatch(cutProduct(currItem))
-    const addItem = (currItem) => dispatch(addProduct(currItem))
-    const delItem = (currItem) => dispatch(deleteItem(currItem))
+    const cutItem = (currItem: CartType) => dispatch(cutProduct(currItem))
+    const addItem = (currItem: CartType) => dispatch(addProduct(currItem))
+    const delItem = (currItem: CartType) => dispatch(deleteItem(currItem))
     return (
         <div className="cart__item">
             <div className="cart__item-img">

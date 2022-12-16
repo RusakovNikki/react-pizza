@@ -3,7 +3,25 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { addProduct } from "../../redux/slices/cartSlice"
 
-const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
+type PizzaType = {
+    id: number
+    title: string
+    price: number
+    imageUrl: string
+    sizes: number[]
+    types: number[]
+}
+
+const PizzaBlock: React.FC<PizzaType> = ({
+    id,
+    title,
+    price,
+    imageUrl,
+    sizes,
+    types,
+}) => {
+    console.log({ id, title, price, imageUrl, sizes, types })
+
     const dispatch = useDispatch()
 
     const [countPizzas, setCountPizzas] = useState(0)

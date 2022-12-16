@@ -1,8 +1,7 @@
-import React from "react"
 import styles from "./Pagination.module.scss"
 
 import ReactPaginate from "react-paginate"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { onChangePages } from "../../redux/slices/filterSlice"
 
 const Pagination = () => {
@@ -16,7 +15,6 @@ const Pagination = () => {
             onPageChange={(e) => dispatch(onChangePages(e.selected + 1))}
             pageRangeDisplayed={4}
             pageCount={3}
-            renderOnZeroPageCount={null}
         />
     )
 }

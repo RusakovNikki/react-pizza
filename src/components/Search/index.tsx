@@ -5,7 +5,7 @@ import debounce from "lodash.debounce"
 import s from "./Search.module.scss"
 import { setSearchText } from "../../redux/slices/filterSlice"
 
-const Search = () => {
+const Search: React.FC = () => {
     const [value, setValue] = useState("")
     const { searchText } = useSelector((state) => state.filter)
     const dispatch = useDispatch()
