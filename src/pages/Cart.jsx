@@ -1,10 +1,9 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import CartEmpty from "../components/CartEmpty.tsx"
+import CartEmpty from "../components/CartEmpty"
 
-// import CartEmpty from "../components/CartEmpty"
-import CartItem from "../components/CartItem.tsx"
+import CartItem from "../components/CartItem"
 import { clearItems } from "../redux/slices/cartSlice"
 import { BASE_URL } from "../utils/consts"
 

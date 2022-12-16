@@ -1,4 +1,4 @@
-import NotFoundBlock from "../components/NotFoundBlock/index.tsx"
+import NotFoundBlock from "../components/NotFoundBlock/index"
 
 const NotFound = () => {
     return (

@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import qs from "qs"
 
-import Categories from "../components/Categories.tsx"
-import PizzaBlock from "../components/PizzaBlock/index.tsx"
+import Categories from "../components/Categories"
+import PizzaBlock from "../components/PizzaBlock/index"
 import Skeleton from "../components/PizzaBlock/Skeleton"
-import Sort, { list } from "../components/Sort.tsx"
+import Sort, { list } from "../components/Sort"
 import { setCategodyId, setParams } from "../redux/slices/filterSlice"
-import Pagination from "../components/Pagination/index.tsx"
+import Pagination from "../components/Pagination/index"
 import { fetchPizzas } from "../redux/slices/pizzaSlice"
 
 const Home = () => {
