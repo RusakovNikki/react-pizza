@@ -22,6 +22,11 @@ const Search: React.FC = () => {
         dispatch(setSearchText(""))
         ref.current?.focus()
     }
+
+    const setValueInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value)
+        updateSearchValue(event.target.value)
+    }
     return (
         <div className={s.search_container}>
             <svg
@@ -35,10 +40,7 @@ const Search: React.FC = () => {
             </svg>
             <input
                 value={value}
-                onChange={(event) => {
-                    setValue(event.target.value)
-                    updateSearchValue(event.target.value)
-                }}
+                onChange={setValueInput}
                 type="text"
                 className={s.input}
                 placeholder="Поиск пицц..."

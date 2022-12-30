@@ -32,8 +32,12 @@ const Sort = () => {
         setOpenPopup(false)
     }
     useEffect(() => {
-        const handleClick = (event: any) => {
-            if (!event.path.includes(sortRef.current)) {
+        const handleClick = (event: MouseEvent) => {
+            const _event = event as MouseEvent & {
+                path: Node[]
+            }
+
+            if (sortRef.current && !_event.path.includes(sortRef.current)) {
                 setOpenPopup(false)
             }
         }

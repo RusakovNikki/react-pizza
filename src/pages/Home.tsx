@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import qs from "qs"
@@ -10,6 +10,7 @@ import Sort, { list } from "../components/Sort"
 import { setCategodyId, setParams } from "../redux/slices/filterSlice"
 import Pagination from "../components/Pagination/index"
 import { fetchPizzas } from "../redux/slices/pizzaSlice"
+import { useAppDispatch } from "../redux/store"
 
 const Home = () => {
     const isParams = useRef(false)
@@ -24,7 +25,7 @@ const Home = () => {
         (state: any) => state.filter
     )
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const searchTextParam = searchText ? `&search=${searchText}` : ""
     const URL = `https://6341842616ffb7e275d2fd20.mockapi.io/items?page=${countPages}&limit=4${
@@ -48,7 +49,6 @@ const Home = () => {
     }, [])
 
     function fetchData(URL: string) {
-        //@ts-ignore
         dispatch(fetchPizzas(URL))
     }
     useEffect(() => {

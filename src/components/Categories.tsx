@@ -1,6 +1,6 @@
 type CategoryProps = {
     sortByCategory: number
-    setSortByCategory: any
+    setSortByCategory: (idx: number) => void
 }
 
 const Categories: React.FC<CategoryProps> = ({

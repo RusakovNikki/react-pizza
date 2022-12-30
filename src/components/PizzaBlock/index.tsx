@@ -1,7 +1,7 @@
 import React from "react"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { addProduct } from "../../redux/slices/cartSlice"
+import { addProduct, CartItem } from "../../redux/slices/cartSlice"
 
 type PizzaType = {
     id: number
@@ -31,7 +31,7 @@ const PizzaBlock: React.FC<PizzaType> = ({
     const testSize = ["тонкое", "традиционное"]
 
     const onClickAdd = () => {
-        const item = {
+        const item: CartItem = {
             id,
             title,
             price,

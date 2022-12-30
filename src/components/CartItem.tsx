@@ -10,7 +10,7 @@ type CartType = {
     size: number
     price: number
     count: number
-    id: string
+    id: number
 }
 
 const CartItem: React.FC<CartType> = ({
