@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../assets/img/pizza-logo.svg"
@@ -6,11 +7,25 @@ import Search from "./Search"
 
 const Header: React.FC = () => {
     const { totalPrice, items } = useSelector((state: any) => state.cart)
+    const isMounted = useRef(false)
     const itemsLength = items.reduce(
         (acc: number, cur: any) => acc + cur.count,
         0
     )
     const { pathname } = useLocation() // Производит перерисовку
+
+    useEffect(() => {
+        if (isMounted.current) {
+            const json = JSON.stringify(items)
+            console.log(items)
+
+            localStorage.setItem("cart", json)
+        }
+        // @ts-ignore
+        console.log(JSON.parse(localStorage.getItem("cart")))
+
+        isMounted.current = true
+    }, [items])
     return (
         <div className="header">
             <div className="container">

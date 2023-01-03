@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import qs from "qs"
@@ -76,6 +76,13 @@ const Home = () => {
         <Skeleton key={index} />
     ))
 
+    const setId = useCallback(
+        (id: number) => {
+            dispatch(setCategodyId(id))
+        },
+        [sortByCategory]
+    )
+
     const pizzaItems = items
         .filter((item: any) => {
             if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
@@ -90,9 +97,7 @@ const Home = () => {
             <div className="content__top">
                 <Categories
                     sortByCategory={sortByCategory}
-                    setSortByCategory={(id: number) =>
-                        dispatch(setCategodyId(id))
-                    }
+                    setSortByCategory={setId}
                 />
                 <Sort />
             </div>

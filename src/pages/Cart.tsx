@@ -23,6 +23,7 @@ const Cart: React.FC = () => {
     if (!items.length) {
         return <CartEmpty />
     }
+
     return (
         <div className="container--cart">
             <div className="cart">
