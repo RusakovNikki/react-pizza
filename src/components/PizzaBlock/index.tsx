@@ -20,8 +20,6 @@ const PizzaBlock: React.FC<PizzaType> = ({
     sizes,
     types,
 }) => {
-    console.log({ id, title, price, imageUrl, sizes, types })
-
     const dispatch = useDispatch()
 
     const [countPizzas, setCountPizzas] = useState(0)

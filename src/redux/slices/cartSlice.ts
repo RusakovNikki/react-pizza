@@ -59,12 +59,11 @@ export const cartSlice = createSlice({
             )
 
             state.items = state.items.filter((item) => item !== isAvailable)
-            state.totalPrice -= action.payload.price
+            state.totalPrice -= action.payload.price * action.payload.count
         },
         clearItems(state) {
             state.items = []
             state.totalPrice = 0
-            console.log(state)
         },
     },
 })

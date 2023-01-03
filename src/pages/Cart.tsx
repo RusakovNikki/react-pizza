@@ -15,7 +15,6 @@ const Cart: React.FC = () => {
         0
     )
 
-    console.log(totalPrice)
     const delAllItemsCart = () => {
         if (window.confirm("Вы уверены что хотите удалить весь товар?"))
             dispatch(clearItems())
